@@ -20,10 +20,6 @@ class RequestHandler:
         response = requests.get(self.url_market + endpoint, headers=self.headers)
         return response.json()
 
-    def put_data(self, endpoint: str):
-        response = requests.put(self.url_trading + endpoint, headers=self.headers)
-        return response.json()
-
     def post_data(self, endpoint: str, data):
         response = requests.post(self.url_trading + endpoint, json.dumps(data), headers=self.headers)
         return response.json()
