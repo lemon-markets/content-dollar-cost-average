@@ -8,19 +8,16 @@ This is a public [lemon.markets](https://lemon.markets) repository that outlines
 
 This script can be used as a starting point to implement your own dollar-cost averaging strategy and to set up Telegram notifications. If implemented as is, the script will trade one share of the Xtrackers MSCI World Swap ETF 1C weekly. 
 
-A walk-through of this script can be found in this blog-post: /todo
+A walk-through of this script can be found in this [blog-post](https://medium.com/lemon-markets/using-the-lemon-markets-api-to-diy-your-etf-savings-plan-using-cost-averaging-57525feaa275).
 
 ### Environment Variables
 
 You'll notice that the script uses several environment variables. Please define the following in an .env file or within your IDE:
 
-* `TOKEN_KEY` - Your lemon.markets access token
-* `CLIENT_ID` - Your client ID
-* `CLIENT_SECRET` - Your client secret
-* `MIC` - Market Idenitfier Code of chosen Trading Venue
-* `BASE_URL` - The base URL of our paper money API
-* `AUTH_URL` - The authentication URL of our API
-* `SPACE_UUID` - UUID of your space
+* `API_KEY` - Your lemon.markets API key
+* `MIC` - Market Identifier Code of chosen Trading Venue
+* `BASE_URL_TRADING` - The base URL of the lemon.markets Trading API
+* `SPACE_ID` - UUID of your space
 
 ### Telegram Bot
 
