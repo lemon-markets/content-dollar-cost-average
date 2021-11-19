@@ -17,6 +17,7 @@ You'll notice that the script uses several environment variables. Please define 
 * `API_KEY` - Your lemon.markets API key
 * `MIC` - Market Identifier Code of chosen Trading Venue
 * `BASE_URL_TRADING` - The base URL of the lemon.markets Trading API
+* `BASE_URL_DATA` - The base URL of the lemon.markets Market Data API
 * `SPACE_ID` - UUID of your space
 
 ### Telegram Bot
