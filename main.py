@@ -1,18 +1,22 @@
 from models.Order import Order
-from models.TradingVenue import TradingVenue
+
+from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.triggers.cron import CronTrigger
+from pytz import utc
+import os
 
 import time
 import telegram_send
 
 
-def buy_order(isin: str):
+def buy_order():
     """
     This method places and activates a buy order for 1 unit of the specified instrument every week.
     :param isin: isin of the instrument you want to buy
     """
     try:
         placed_order = Order().place_order(
-            isin=isin,
+            isin="LU0274208692",
             expires_at="p0d",
             side="buy",
             quantity=1,
@@ -33,22 +37,22 @@ def buy_order(isin: str):
 
         telegram_send.send(messages=[f'Your automated trading strategy just purchased {amount_bought} share(s) '
                                      f'at €{average_price/10000:,.2f} per share.'])
-        time.sleep(604800)  # sleep for a week
 
     except Exception as e:
         print(e)
-        time.sleep(60)
-
-
-def dollar_cost_averaging():
-    while True:
-        if TradingVenue().is_open:
-            buy_order(
-                isin="LU0274208692",  # XTRACKERS MSCI WORLD SWAP
-            )
-        else:
-            time.sleep(TradingVenue().seconds_till_tv_opens())
-
 
 if __name__ == '__main__':
-    dollar_cost_averaging()
+    scheduler = BlockingScheduler(timezone=utc)
+
+    scheduler.add_job(buy_order,
+                      trigger=CronTrigger(day_of_week="mon-fri",
+                                          hour=10,
+                                          minute=30,
+                                          timezone=utc),
+                      name="Perform DCA")
+    print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
+
+    try:
+        scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        pass

@@ -12,7 +12,6 @@ class Order(RequestHandler):
             "expires_at": expires_at,
             "side": side,
             "quantity": quantity,
-            "space_id": os.getenv("SPACE_ID"),
             "venue": os.getenv("MIC")
         }
 
