@@ -20,7 +20,6 @@ class Order(RequestHandler):
         return response
 
     def activate_order(self, order_id):
-
         endpoint = f'orders/{order_id}/activate/'
         response = self.post_data(endpoint, {})
         return response

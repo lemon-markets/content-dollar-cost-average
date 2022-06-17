@@ -3,4 +3,5 @@ python-telegram-bot==13.7
 requests==2.26.0
 telegram==0.0.1
 telegram-send==0.25
-
+APScheduler~=3.6.3
+pytz~=2022.1
