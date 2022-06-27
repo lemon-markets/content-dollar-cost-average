@@ -14,10 +14,11 @@ A walk-through of this script can be found in this [blog-post](https://medium.co
 
 You'll notice that the script uses several environment variables. Please define the following in an .env file or within your IDE:
 
-* `API_KEY` - Your lemon.markets API key
-* `MIC` - Market Identifier Code of chosen Trading Venue
-* `BASE_URL_TRADING` - The base URL of the lemon.markets Trading API
-* `BASE_URL_DATA` - The base URL of the lemon.markets Market Data API
+| ENV Variable |               Explanation               |  
+|--------------|:---------------------------------------:|
+| DATA_API_KEY |        Your market data API key         |
+ | TRADING_API_KEY |    Your paper/money trading API key     |
+| MIC          | Market Identifier Code of Trading Venue |
 
 ### Telegram Bot
 
