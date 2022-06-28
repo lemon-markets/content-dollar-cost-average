@@ -54,8 +54,8 @@ if __name__ == '__main__':
 
     scheduler.add_job(buy_order,
                       trigger=CronTrigger(day_of_week="mon-fri",
-                                          hour=11,
-                                          minute=13,
+                                          hour=10,
+                                          minute=30,
                                           timezone=utc),
                       name="Perform DCA")
     print('Press Ctrl+{0} to exit'.format('Break' if os.name == 'nt' else 'C'))
