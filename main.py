@@ -1,12 +1,19 @@
-from models.Order import Order
-
 from apscheduler.schedulers.blocking import BlockingScheduler
 from apscheduler.triggers.cron import CronTrigger
+from lemon import api
+from dotenv import load_dotenv
 from pytz import utc
 import os
 
-import time
 import telegram_send
+
+load_dotenv()
+# create your api client with separate trading and market data api tokens
+client = api.create(
+    trading_api_token=os.environ.get('TRADING_API_KEY'),
+    market_data_api_token=os.environ.get('DATA_API_KEY'),
+    env='paper'
+)
 
 
 def buy_order():
@@ -15,31 +22,32 @@ def buy_order():
     :param isin: isin of the instrument you want to buy
     """
     try:
-        placed_order = Order().place_order(
+        placed_order = client.trading.orders.create(
             isin="LU0274208692",
-            expires_at="p0d",
+            expires_at=0,
             side="buy",
             quantity=1,
         )
 
-        order_id = placed_order['results'].get('id')
-        activated_order = Order().activate_order(order_id)
+        order_id = placed_order.results.id
+        activated_order = client.trading.orders.activate(order_id=order_id)
         print(activated_order)
 
         while True:
-            order_summary = Order().get_order(order_id)['results']
-            if order_summary.get('status') == 'executed':
+            order_summary = client.trading.orders.get_order(order_id=order_id)
+            if order_summary.results.status == 'executed':
                 print('executed')
                 break
 
-        average_price = order_summary.get('executed_price')
-        amount_bought = order_summary.get('executed_quantity')
+        executed_price = order_summary.results.executed_price
+        executed_quantity = order_summary.results.quantity
 
-        telegram_send.send(messages=[f'Your automated trading strategy just purchased {amount_bought} share(s) '
-                                     f'at €{average_price/10000:,.2f} per share.'])
+        telegram_send.send(messages=[f'Your automated trading strategy just purchased {executed_quantity} share(s) '
+                                     f'at €{executed_price/10000:,.2f} per share.'])
 
     except Exception as e:
         print(e)
+
 
 if __name__ == '__main__':
     scheduler = BlockingScheduler(timezone=utc)
